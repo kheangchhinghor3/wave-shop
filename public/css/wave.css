@@ -1,0 +1,135 @@
+/* ===== WAVE SHOP: colors ===== */
+:root {
+    --wave-navy: #1b2a41;
+    --wave-blue: #a9d6f5;
+    --wave-blue-dark: #4a9fdc;
+    --wave-yellow: #fff1a8;
+    --wave-white: #ffffff;
+    --wave-gray: #f4f7fa;
+}
+
+/* ===== Base ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--wave-navy);
+    background: var(--wave-gray);
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.site-main {
+    min-height: 70vh;
+    padding: 40px 0;
+}
+
+/* ===== Navbar ===== */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--wave-white);
+    border-bottom: 3px solid var(--wave-blue);
+}
+
+.nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    height: 70px;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: var(--wave-blue-dark);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+}
+
+.nav-links a {
+    font-weight: 500;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.nav-links a:hover {
+    border-bottom-color: var(--wave-blue-dark);
+}
+
+.nav-links .btn-nav {
+    background: var(--wave-yellow);
+    padding: 8px 18px;
+    border-radius: 999px;
+    border-bottom: none;
+}
+
+.nav-links .btn-nav:hover {
+    background: #ffe873;
+}
+
+/* ===== Footer ===== */
+.site-footer {
+    background: var(--wave-navy);
+    color: var(--wave-white);
+    padding: 40px 0 20px;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-inner h4 {
+    color: var(--wave-yellow);
+    margin-bottom: 10px;
+}
+
+.footer-inner a {
+    display: block;
+    color: var(--wave-blue);
+    margin-bottom: 6px;
+}
+
+.footer-inner a:hover {
+    color: var(--wave-white);
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.85rem;
+    color: var(--wave-blue);
+}
