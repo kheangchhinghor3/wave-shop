@@ -12,4 +12,19 @@ class ProductController extends Controller
 
         return view('products.index', ['products' => $products]);
     }
+
+    public function show(Product $product)
+    {
+        $product->load('category');
+
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->take(4)
+            ->get();
+
+        return view('products.show', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts,
+        ]);
+    }
 }
