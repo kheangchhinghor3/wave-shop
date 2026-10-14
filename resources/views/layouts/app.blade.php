@@ -21,7 +21,19 @@
                 <li><a href="{{ url('/') }}">Home</a></li>
                 <li><a href="{{ url('/products') }}">Products</a></li>
                 <li><a href="#">Cart</a></li>
-                <li><a href="#" class="btn-nav">Login</a></li>
+
+                @auth
+                    <li class="nav-user">Hi, {{ Auth::user()->name }}</li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-nav btn-logout">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    <li><a href="{{ route('login') }}" class="btn-nav">Login</a></li>
+                    <li><a href="{{ route('register') }}" class="btn-nav btn-nav-blue">Register</a></li>
+                @endauth
             </ul>
         </div>
     </header>
@@ -54,6 +66,20 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Show / Hide password buttons (works for any .toggle-password button)
+        document.addEventListener('click', function (event) {
+            const button = event.target.closest('.toggle-password');
+            if (!button) return;
+
+            const input = button.parentElement.querySelector('input');
+            const isShowing = input.type === 'text';
+
+            input.type = isShowing ? 'password' : 'text';
+            button.textContent = isShowing ? 'Show' : 'Hide';
+        });
+    </script>
 
 </body>
 </html>
