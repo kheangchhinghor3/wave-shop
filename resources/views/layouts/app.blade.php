@@ -23,7 +23,7 @@
                 <li><a href="#">Cart</a></li>
 
                 @auth
-                    <li class="nav-user">Hi, {{ Auth::user()->name }}</li>
+                    <li><a href="{{ route('account') }}" class="nav-user">Hi, {{ Auth::user()->name }}</a></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf

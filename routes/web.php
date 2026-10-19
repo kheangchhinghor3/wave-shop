@@ -23,7 +23,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
-// Logout: only for logged-in users
-Route::post('/logout', [AuthController::class, 'logout'])
-    ->middleware('auth')
-    ->name('logout');
+// Pages only for logged-in users
+Route::middleware('auth')->group(function () {
+    Route::view('/account', 'account')->name('account');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});

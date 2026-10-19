@@ -649,3 +649,23 @@ a {
 .nav-links .btn-nav-blue:hover {
     background: #8ec9f0;
 }
+/* ===== Account page ===== */
+.account-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e6eef5;
+}
+
+.account-row:last-child {
+    border-bottom: none;
+}
+
+.account-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--wave-blue-dark);
+}
