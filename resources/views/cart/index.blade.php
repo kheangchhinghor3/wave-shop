@@ -69,7 +69,7 @@
                     <span>${{ number_format($total, 2) }}</span>
                 </div>
 
-                <button type="button" class="btn btn-full" disabled>Checkout (coming soon)</button>
+                <a href="{{ route('checkout.show') }}" class="btn btn-full">Checkout</a>
                 <a href="{{ route('products.index') }}" class="reset-link">Continue shopping</a>
             </aside>
 
