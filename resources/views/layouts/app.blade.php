@@ -20,7 +20,21 @@
             <ul class="nav-links">
                 <li><a href="{{ url('/') }}">Home</a></li>
                 <li><a href="{{ url('/products') }}">Products</a></li>
-                <li><a href="#">Cart</a></li>
+                <li>
+                    @auth
+                        @php
+                            $cartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
+                        @endphp
+                        <a href="{{ route('cart.index') }}">
+                            Cart
+                            @if ($cartCount > 0)
+                                <span class="cart-count">{{ $cartCount }}</span>
+                            @endif
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}">Cart</a>
+                    @endauth
+                </li>
 
                 @auth
                     <li><a href="{{ route('account') }}" class="nav-user">Hi, {{ Auth::user()->name }}</a></li>
