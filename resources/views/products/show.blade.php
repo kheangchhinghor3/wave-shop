@@ -34,7 +34,14 @@
                     @endif
                 </p>
 
-                <button type="button" class="btn">Add to Cart</button>
+                @auth
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn">Add to Cart</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn">Login to add to cart</a>
+                @endauth
             @else
                 <p class="soldout">SOLD OUT</p>
             @endif

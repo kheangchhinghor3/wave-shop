@@ -669,3 +669,28 @@ a {
     letter-spacing: 1.5px;
     color: var(--wave-blue-dark);
 }
+/* ===== Flash messages ===== */
+.flash {
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.flash-success {
+    background: #e3f6ea;
+    color: #1f6b3a;
+    border: 1px solid #b9e4c8;
+}
+
+.flash-error {
+    background: #fdeaea;
+    color: #a63a37;
+    border: 1px solid #f3c4c2;
+}
+
+/* Make link buttons look like the Add to Cart button */
+a.btn {
+    display: inline-block;
+    margin-top: 16px;
+}

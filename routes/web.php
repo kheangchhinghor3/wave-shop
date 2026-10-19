@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,8 @@ Route::middleware('guest')->group(function () {
 // Pages only for logged-in users
 Route::middleware('auth')->group(function () {
     Route::view('/account', 'account')->name('account');
+
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
