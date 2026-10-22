@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    public function index()
+    {
+        $orders = Order::withSum('items', 'quantity')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('orders.index', ['orders' => $orders]);
+    }
+
     public function show(Order $order)
     {
         // A user may only see their own orders

@@ -37,6 +37,7 @@
                 </li>
 
                 @auth
+                    <li><a href="{{ route('orders.index') }}">Orders</a></li>
                     <li><a href="{{ route('account') }}" class="nav-user">Hi, {{ Auth::user()->name }}</a></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST">
