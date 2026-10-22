@@ -5,6 +5,10 @@
 @section('content')
     <a href="{{ route('products.index') }}" class="back-link">&larr; Back to all products</a>
 
+    @php
+        $saved = in_array($product->id, $wishlistIds ?? []);
+    @endphp
+
     <div class="detail">
         <div class="detail-image">
             <span class="thumb-icon">🌊</span>
@@ -33,18 +37,33 @@
                         In stock: {{ $product->stock }}
                     @endif
                 </p>
-
-                @auth
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn">Add to Cart</button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="btn">Login to add to cart</a>
-                @endauth
             @else
                 <p class="soldout">SOLD OUT</p>
             @endif
+
+            <div class="detail-actions">
+                @if ($product->stock > 0)
+                    @auth
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn">Add to Cart</button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="btn">Login to add to cart</a>
+                    @endauth
+                @endif
+
+                @auth
+                    <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-wish {{ $saved ? 'is-active' : '' }}">
+                            {{ $saved ? '♥ Saved to wishlist' : '♡ Add to wishlist' }}
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-wish">♡ Add to wishlist</a>
+                @endauth
+            </div>
         </div>
     </div>
 
@@ -52,22 +71,7 @@
         <h2 class="section-title">Related products</h2>
         <div class="grid">
             @foreach ($relatedProducts as $related)
-                <a href="{{ route('products.show', $related->slug) }}"
-                   class="card {{ $related->stock > 0 ? '' : 'card-soldout' }}">
-
-                    <div class="card-thumb">
-                        @if ($related->is_limited)
-                            <span class="badge">LIMITED</span>
-                        @endif
-                        <span class="thumb-icon">🌊</span>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="category">{{ $related->category->name }}</div>
-                        <div class="name">{{ $related->name }}</div>
-                        <div class="price">${{ number_format($related->price, 2) }}</div>
-                    </div>
-                </a>
+                @include('partials.product-card', ['product' => $related, 'wishlistIds' => $wishlistIds])
             @endforeach
         </div>
     @endif

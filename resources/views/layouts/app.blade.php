@@ -23,6 +23,21 @@
                 <li>
                     @auth
                         @php
+                            $wishCount = \App\Models\WishlistItem::where('user_id', Auth::id())->count();
+                        @endphp
+                        <a href="{{ route('wishlist.index') }}">
+                            Wishlist
+                            @if ($wishCount > 0)
+                                <span class="cart-count">{{ $wishCount }}</span>
+                            @endif
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}">Wishlist</a>
+                    @endauth
+                </li>
+                <li>
+                    @auth
+                        @php
                             $cartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
                         @endphp
                         <a href="{{ route('cart.index') }}">

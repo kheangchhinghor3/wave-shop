@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\WishlistItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -58,6 +60,7 @@ class ProductController extends Controller
         return view('products.index', [
             'products' => $products,
             'categories' => $categories,
+            'wishlistIds' => $this->wishlistIds(),
         ]);
     }
 
@@ -65,7 +68,8 @@ class ProductController extends Controller
     {
         $product->load('category');
 
-        $relatedProducts = Product::where('category_id', $product->category_id)
+        $relatedProducts = Product::with('category')
+            ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->take(4)
             ->get();
@@ -73,6 +77,19 @@ class ProductController extends Controller
         return view('products.show', [
             'product' => $product,
             'relatedProducts' => $relatedProducts,
+            'wishlistIds' => $this->wishlistIds(),
         ]);
+    }
+
+    // IDs of the products the logged-in user has saved (empty for guests)
+    private function wishlistIds(): array
+    {
+        if (! Auth::check()) {
+            return [];
+        }
+
+        return WishlistItem::where('user_id', Auth::id())
+            ->pluck('product_id')
+            ->all();
     }
 }
