@@ -6,13 +6,14 @@
     <div class="invoice">
 
         {{-- Header --}}
-        <div class="invoice-head">
+        <!-- <div class="invoice-head">
             {{-- Replace this line with your image logo later --}}
             <div class="invoice-logo">WAVE <span>SHOP</span></div>
 
             <h1 class="invoice-title">Invoice</h1>
             <p class="invoice-number">{{ $order->order_number }}</p>
-        </div>
+        </div> -->
+        @include('partials.logo-img', ['class' => 'invoice-logo'])
 
         <hr class="invoice-line">
 

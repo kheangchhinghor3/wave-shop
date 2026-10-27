@@ -1252,3 +1252,34 @@ a.btn-full {
     border-color: #e8576d;
     color: #e8576d;
 }
+
+/* Logo image test */
+.logo-img {
+    height: 200px;
+    width: auto;
+    display: block;
+}
+
+/* Logo on invoice */
+.invoice-logo {
+    height: 200px;
+    width: auto;
+    display: block;
+    margin: -60px auto -55px;
+}
+
+/* Active page link in the navbar */
+.nav-links a.active,
+.nav-links a.active:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 8px;
+    text-decoration-color: #f5c84c;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+.nav-links a.active::after,
+.nav-links a.active:hover::after {
+    display: none;
+}
