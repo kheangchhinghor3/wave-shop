@@ -1283,3 +1283,138 @@ a.btn-full {
 .nav-links a.active:hover::after {
     display: none;
 }
+
+/* Reviews */
+.reviews {
+    margin: 48px 0;
+    scroll-margin-top: 110px;
+}
+
+.rating-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 8px;
+    color: #5b6b82;
+    font-size: 14px;
+}
+
+.stars {
+    color: #f5c84c;
+    letter-spacing: 2px;
+}
+
+.review-form {
+    background: #fff;
+    border: 1px solid #e3e8f0;
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    max-width: 720px;
+}
+
+.review-form h3 {
+    margin: 0 0 14px;
+    font-size: 18px;
+}
+
+.review-label {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5b6b82;
+}
+
+.review-form textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    border: 1px solid #d5d9e0;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* Star picker: 5 clickable stars, highest first in the HTML, shown 1 to 5 */
+.star-input {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: 2px;
+    margin-bottom: 14px;
+}
+
+.star-input input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.star-input label {
+    font-size: 36px;
+    line-height: 1;
+    color: #d5d9e0;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.star-input input:checked ~ label,
+.star-input label:hover,
+.star-input label:hover ~ label {
+    color: #f5c84c;
+}
+
+.form-error {
+    color: #c0392b;
+    font-size: 13px;
+    margin: -6px 0 12px;
+}
+
+.review-delete {
+    margin-bottom: 22px;
+}
+
+.btn-link-danger {
+    background: none;
+    border: none;
+    color: #c0392b;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.review-item {
+    background: #fff;
+    border: 1px solid #e3e8f0;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    max-width: 720px;
+}
+
+.review-top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.review-date {
+    margin-left: auto;
+    color: #8b97a8;
+    font-size: 12px;
+}
+
+.review-item p {
+    margin: 8px 0 0;
+}

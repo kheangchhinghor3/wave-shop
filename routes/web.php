@@ -6,6 +6,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,10 @@ Route::middleware('auth')->group(function () {
     // Wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+
+    // Reviews
+    Route::post('/products/{product:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/products/{product:slug}/reviews', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
     // Checkout and orders
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
