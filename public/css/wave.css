@@ -1418,3 +1418,54 @@ a.btn-full {
 .review-item p {
     margin: 8px 0 0;
 }
+
+/* Coupon box in the cart */
+.coupon-form {
+    display: flex;
+    gap: 8px;
+    margin: 14px 0;
+}
+
+.coupon-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid #d5d9e0;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.btn-coupon {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    background: #1b2a41;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.summary-discount {
+    color: #1e8e5a;
+    font-weight: 600;
+}
+
+.coupon-remove {
+    margin: 0 0 12px;
+}
+
+/* Invoice: subtotal and coupon lines */
+.invoice-sum-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    color: #5b6b82;
+}
+
+.invoice-discount {
+    color: #1e8e5a;
+    font-weight: 600;
+}

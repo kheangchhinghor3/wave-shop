@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
+use App\Models\Coupon;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,35 @@ class CartController extends Controller
             ->latest()
             ->get();
 
-        $total = $items->sum(fn ($item) => $item->product->price * $item->quantity);
+        $subtotal = $this->subtotalOf($items);
+
+        // Coupon saved in the session (if any)
+        $coupon = null;
+        $discount = 0;
+        $code = session('coupon_code');
+
+        if ($code) {
+            $coupon = Coupon::where('code', $code)->first();
+            $problem = $coupon
+                ? $coupon->problemFor($subtotal)
+                : 'This coupon is no longer available.';
+
+            if ($problem) {
+                // Example: the cart dropped below the minimum order
+                session()->forget('coupon_code');
+                session()->now('error', $problem);
+                $coupon = null;
+            } else {
+                $discount = $coupon->discountFor($subtotal);
+            }
+        }
 
         return view('cart.index', [
-            'items' => $items,
-            'total' => $total,
+            'items'    => $items,
+            'subtotal' => $subtotal,
+            'coupon'   => $coupon,
+            'discount' => $discount,
+            'total'    => $subtotal - $discount,
         ]);
     }
 
@@ -82,5 +107,49 @@ class CartController extends Controller
         $item->delete();
 
         return back()->with('success', 'Item removed from your cart.');
+    }
+
+    public function applyCoupon(Request $request)
+    {
+        $request->validate([
+            'code' => ['required', 'string', 'max:50'],
+        ]);
+
+        $items = CartItem::with('product')
+            ->where('user_id', Auth::id())
+            ->get();
+
+        if ($items->isEmpty()) {
+            return back()->with('error', 'Your cart is empty.');
+        }
+
+        $code = strtoupper(trim($request->code));
+        $coupon = Coupon::where('code', $code)->first();
+
+        if (! $coupon) {
+            return back()->with('error', 'That coupon code is not valid.');
+        }
+
+        $problem = $coupon->problemFor($this->subtotalOf($items));
+
+        if ($problem) {
+            return back()->with('error', $problem);
+        }
+
+        session(['coupon_code' => $coupon->code]);
+
+        return back()->with('success', "Coupon {$coupon->code} applied!");
+    }
+
+    public function removeCoupon()
+    {
+        session()->forget('coupon_code');
+
+        return back()->with('success', 'Coupon removed.');
+    }
+
+        private function subtotalOf(\Illuminate\Support\Collection $items): float
+    {
+        return (float) $items->sum(fn ($item) => $item->product->price * $item->quantity);
     }
 }

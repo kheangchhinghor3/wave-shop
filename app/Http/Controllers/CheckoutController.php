@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -22,11 +23,34 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
-        $total = $items->sum(fn ($item) => $item->product->price * $item->quantity);
+        $subtotal = (float) $items->sum(fn ($item) => $item->product->price * $item->quantity);
+
+        // Coupon saved in the session (if any)
+        $coupon = null;
+        $discount = 0;
+        $code = session('coupon_code');
+
+        if ($code) {
+            $coupon = Coupon::where('code', $code)->first();
+            $problem = $coupon
+                ? $coupon->problemFor($subtotal)
+                : 'This coupon is no longer available.';
+
+            if ($problem) {
+                session()->forget('coupon_code');
+
+                return redirect()->route('cart.index')->with('error', $problem);
+            }
+
+            $discount = $coupon->discountFor($subtotal);
+        }
 
         return view('checkout.show', [
-            'items' => $items,
-            'total' => $total,
+            'items'    => $items,
+            'subtotal' => $subtotal,
+            'coupon'   => $coupon,
+            'discount' => $discount,
+            'total'    => $subtotal - $discount,
         ]);
     }
 
@@ -46,9 +70,11 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
+        $couponCode = session('coupon_code');
+
         try {
-            $order = DB::transaction(function () use ($items, $validated) {
-                $total = 0;
+            $order = DB::transaction(function () use ($items, $validated, $couponCode) {
+                $subtotal = 0;
                 $lines = [];
 
                 foreach ($items as $item) {
@@ -67,7 +93,7 @@ class CheckoutController extends Controller
 
                     $product->decrement('stock', $item->quantity);
 
-                    $total += $product->price * $item->quantity;
+                    $subtotal += $product->price * $item->quantity;
 
                     $lines[] = [
                         'product_id' => $product->id,
@@ -77,11 +103,32 @@ class CheckoutController extends Controller
                     ];
                 }
 
+                // Coupon: checked again here, and locked so the usage limit cannot be beaten
+                $discount = 0;
+                $appliedCode = null;
+
+                if ($couponCode) {
+                    $coupon = Coupon::where('code', $couponCode)->lockForUpdate()->first();
+                    $problem = $coupon
+                        ? $coupon->problemFor((float) $subtotal)
+                        : 'This coupon is no longer available.';
+
+                    if ($problem) {
+                        throw new \RuntimeException($problem);
+                    }
+
+                    $discount = $coupon->discountFor((float) $subtotal);
+                    $appliedCode = $coupon->code;
+                    $coupon->increment('times_used');
+                }
+
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'order_number' => 'WS-' . now()->format('ymd') . '-' . strtoupper(Str::random(4)),
                     'status' => 'pending',
-                    'total' => $total,
+                    'total' => $subtotal - $discount,
+                    'coupon_code' => $appliedCode,
+                    'discount' => $discount,
                     ...$validated,
                 ]);
 
@@ -95,6 +142,9 @@ class CheckoutController extends Controller
         } catch (\RuntimeException $e) {
             return redirect()->route('cart.index')->with('error', $e->getMessage());
         }
+
+        // The coupon has been used, so forget it
+        session()->forget('coupon_code');
 
         return redirect()
             ->route('orders.show', $order)

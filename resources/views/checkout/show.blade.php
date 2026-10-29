@@ -71,6 +71,18 @@
                 </div>
             @endforeach
 
+            @if ($coupon)
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>${{ number_format($subtotal, 2) }}</span>
+                </div>
+
+                <div class="summary-row summary-discount">
+                    <span>Coupon {{ $coupon->code }}</span>
+                    <span>-${{ number_format($discount, 2) }}</span>
+                </div>
+            @endif
+
             <div class="summary-row summary-total">
                 <span>Total</span>
                 <span>${{ number_format($total, 2) }}</span>

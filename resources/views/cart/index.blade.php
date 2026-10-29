@@ -64,6 +64,31 @@
                     <span>{{ $items->sum('quantity') }}</span>
                 </div>
 
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>${{ number_format($subtotal, 2) }}</span>
+                </div>
+
+                {{-- Coupon --}}
+                @if ($coupon)
+                    <div class="summary-row summary-discount">
+                        <span>Coupon {{ $coupon->code }}</span>
+                        <span>-${{ number_format($discount, 2) }}</span>
+                    </div>
+
+                    <form action="{{ route('coupon.remove') }}" method="POST" class="coupon-remove">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-link-danger">Remove coupon</button>
+                    </form>
+                @else
+                    <form action="{{ route('coupon.apply') }}" method="POST" class="coupon-form">
+                        @csrf
+                        <input type="text" name="code" placeholder="Coupon code" autocomplete="off" required>
+                        <button type="submit" class="btn-coupon">Apply</button>
+                    </form>
+                @endif
+
                 <div class="summary-row summary-total">
                     <span>Total</span>
                     <span>${{ number_format($total, 2) }}</span>

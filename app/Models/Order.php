@@ -13,6 +13,8 @@ class Order extends Model
         'order_number',
         'status',
         'total',
+        'coupon_code',
+        'discount',
         'shipping_name',
         'shipping_phone',
         'shipping_address',

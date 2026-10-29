@@ -6,13 +6,6 @@
     <div class="invoice">
 
         {{-- Header --}}
-        <!-- <div class="invoice-head">
-            {{-- Replace this line with your image logo later --}}
-            <div class="invoice-logo">WAVE <span>SHOP</span></div>
-
-            <h1 class="invoice-title">Invoice</h1>
-            <p class="invoice-number">{{ $order->order_number }}</p>
-        </div> -->
         @include('partials.logo-img', ['class' => 'invoice-logo'])
 
         <hr class="invoice-line">
@@ -70,6 +63,17 @@
                 <div class="invoice-item-price">${{ number_format($item->price * $item->quantity, 2) }}</div>
             </div>
         @endforeach
+
+        @if ($order->discount > 0)
+            <div class="invoice-sum-row">
+                <span>Subtotal</span>
+                <span>${{ number_format($order->total + $order->discount, 2) }}</span>
+            </div>
+            <div class="invoice-sum-row invoice-discount">
+                <span>Coupon {{ $order->coupon_code }}</span>
+                <span>-${{ number_format($order->discount, 2) }}</span>
+            </div>
+        @endif
 
         <div class="invoice-total">
             <span>Total</span>
