@@ -3,10 +3,12 @@
 @section('title', $product->name . ' - WAVE SHOP')
 
 @section('content')
-    <a href="{{ route('products.index') }}" class="back-link">&larr; Back to all products</a>
+            <a href="{{ route('products.index') }}" class="back-link"
+       onclick="try { if (new URL(document.referrer).pathname === '/products') { history.back(); return false; } } catch (e) {}">&larr; Back to all products</a>
 
     @php
         $saved = in_array($product->id, $wishlistIds ?? []);
+        $images = $product->images;
 
         // Reviews for this product
         $reviews  = $product->reviews()->with('user')->latest()->get();
@@ -15,8 +17,23 @@
     @endphp
 
     <div class="detail">
-        <div class="detail-image">
-            <span class="thumb-icon">🌊</span>
+        <div class="detail-image gallery">
+            @if ($images->count() > 0)
+                <img id="gallery-main" src="{{ asset($images->first()->path) }}" alt="{{ $product->name }}" class="gallery-main">
+
+                @if ($images->count() > 1)
+                    <div class="gallery-thumbs">
+                        @foreach ($images as $index => $image)
+                            <button type="button" class="gallery-thumb {{ $index === 0 ? 'is-active' : '' }}"
+                                    data-src="{{ asset($image->path) }}" aria-label="Photo {{ $index + 1 }}">
+                                <img src="{{ asset($image->path) }}" alt="">
+                            </button>
+                        @endforeach
+                    </div>
+                @endif
+            @else
+                <span class="thumb-icon">🌊</span>
+            @endif
         </div>
 
         <div class="detail-info">
@@ -144,4 +161,18 @@
             @endforeach
         </div>
     @endif
+
+    <script>
+        // Click a small photo to show it big
+        const mainPhoto = document.getElementById('gallery-main');
+
+        document.querySelectorAll('.gallery-thumb').forEach(button => {
+            button.addEventListener('click', () => {
+                mainPhoto.src = button.dataset.src;
+
+                document.querySelectorAll('.gallery-thumb').forEach(b => b.classList.remove('is-active'));
+                button.classList.add('is-active');
+            });
+        });
+    </script>
 @endsection

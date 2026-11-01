@@ -61,6 +61,13 @@
                     <li>
                         <a href="{{ route('orders.index') }}" class="{{ request()->routeIs('orders.*') ? 'active' : '' }}">Orders</a>
                     </li>
+
+                    @if (Auth::user()->is_admin)
+                        <li>
+                            <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.*') ? 'active' : '' }}">Admin</a>
+                        </li>
+                    @endif
+
                     <li>
                         <a href="{{ route('account') }}" class="nav-user {{ request()->routeIs('account') ? 'active' : '' }}">Hi, {{ Auth::user()->name }}</a>
                     </li>
