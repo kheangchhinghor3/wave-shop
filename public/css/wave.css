@@ -2079,3 +2079,24 @@ button.btn-small {
         grid-template-columns: 1fr;
     }
 }
+
+/* Coupon statuses */
+.status-active {
+    background: #e2f6ea;
+    color: #1e7a4c;
+}
+
+.status-inactive {
+    background: #eef1f6;
+    color: #5b6b82;
+}
+
+.status-expired {
+    background: #ffe0e0;
+    color: #c0392b;
+}
+
+.status-usedup {
+    background: #fff6cc;
+    color: #8a6a00;
+}
