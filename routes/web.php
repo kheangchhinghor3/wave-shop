@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
@@ -15,8 +16,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
-// Home shows the shop for now (a real Home page can replace this later)
-Route::redirect('/', '/products');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/hello', [PageController::class, 'hello']);
 

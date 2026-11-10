@@ -2122,3 +2122,131 @@ button.btn-small {
 .pcard .drop-timer {
     align-self: flex-start;
 }
+
+/* Home page */
+.hero {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    align-items: center;
+    gap: 24px;
+    margin: 28px 0 28px;
+    padding: 40px;
+    border-radius: 28px;
+    border: 1px solid #e3e8f0;
+    background: linear-gradient(135deg, #e3f0ff 0%, #ffe6f0 55%, #fff6cc 100%);
+}
+
+.hero-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: #1b2a41;
+    color: #fff1b8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.hero h1 {
+    margin: 14px 0 10px;
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.1;
+    color: #1b2a41;
+}
+
+.hero h1 span {
+    color: #4a9ad8;
+}
+
+.hero p {
+    max-width: 480px;
+    margin: 0 0 22px;
+    color: #5b6b82;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hero-art {
+    text-align: center;
+    font-size: 140px;
+    line-height: 1;
+}
+
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 36px;
+}
+
+.chip {
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #e3e8f0;
+    color: #1b2a41;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.chip:hover {
+    background: #fff1b8;
+    border-color: #f5c84c;
+}
+
+.home-section {
+    margin-bottom: 44px;
+    scroll-margin-top: 100px;
+}
+
+.section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.perks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 10px 0 48px;
+}
+
+.perk {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 22px;
+    background: #fff;
+    border: 1px solid #e3e8f0;
+    border-radius: 18px;
+    color: #5b6b82;
+    font-size: 14px;
+}
+
+.perk strong {
+    color: #1b2a41;
+    font-size: 16px;
+}
+
+.perk-icon {
+    font-size: 26px;
+}
+
+@media (max-width: 800px) {
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 28px;
+    }
+
+    .hero-art {
+        display: none;
+    }
+}
