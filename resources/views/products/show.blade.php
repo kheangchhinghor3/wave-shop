@@ -3,8 +3,7 @@
 @section('title', $product->name . ' - WAVE SHOP')
 
 @section('content')
-            <a href="{{ route('products.index') }}" class="back-link"
-       onclick="try { if (new URL(document.referrer).pathname === '/products') { history.back(); return false; } } catch (e) {}">&larr; Back to all products</a>
+    <a href="{{ route('products.index') }}" class="back-link">&larr; Back to all products</a>
 
     @php
         $saved = in_array($product->id, $wishlistIds ?? []);
@@ -39,6 +38,7 @@
         <div class="detail-info">
             @if ($product->is_limited)
                 <span class="badge-inline">LIMITED DROP</span>
+                @include('partials.drop-timer', ['product' => $product])
             @endif
 
             <div class="category">{{ $product->category->name }}</div>
@@ -59,7 +59,9 @@
                 <p class="meta">Collection: {{ $product->collection }}</p>
             @endif
 
-            @if ($product->stock > 0)
+            @if ($product->dropEnded())
+                <p class="soldout">DROP ENDED</p>
+            @elseif ($product->stock > 0)
                 <p class="meta">
                     @if ($product->is_limited)
                         Only {{ $product->stock }} left
@@ -72,7 +74,7 @@
             @endif
 
             <div class="detail-actions">
-                @if ($product->stock > 0)
+                @if ($product->stock > 0 && ! $product->dropEnded())
                     @auth
                         <form action="{{ route('cart.add', $product->id) }}" method="POST">
                             @csrf

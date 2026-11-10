@@ -2100,3 +2100,25 @@ button.btn-small {
     background: #fff6cc;
     color: #8a6a00;
 }
+
+/* Limited drop countdown */
+.drop-timer {
+    display: inline-block;
+    margin: 6px 0;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #1b2a41;
+    color: #fff1b8;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.drop-timer.is-ended {
+    background: #eef1f6;
+    color: #8b97a8;
+}
+
+.pcard .drop-timer {
+    align-self: flex-start;
+}

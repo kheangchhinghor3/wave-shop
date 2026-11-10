@@ -136,5 +136,8 @@
         });
     </script>
 
+    {{-- Countdown for limited drops --}}
+    <script src="{{ asset('js/drop-timer.js') }}"></script>
+
 </body>
 </html>

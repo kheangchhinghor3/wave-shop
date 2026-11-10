@@ -23,6 +23,16 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
+        // A product from a drop that has ended cannot be bought
+        $ended = $items->first(fn ($item) => $item->product->dropEnded());
+
+        if ($ended) {
+            return redirect()->route('cart.index')->with(
+                'error',
+                "The drop for {$ended->product->name} has ended. Please remove it from your cart to continue."
+            );
+        }
+
         $subtotal = (float) $items->sum(fn ($item) => $item->product->price * $item->quantity);
 
         // Coupon saved in the session (if any)
@@ -83,6 +93,12 @@ class CheckoutController extends Controller
 
                     if (! $product) {
                         throw new \RuntimeException('A product in your cart is no longer available.');
+                    }
+
+                    if ($product->dropEnded()) {
+                        throw new \RuntimeException(
+                            "The drop for {$product->name} has ended. Please remove it from your cart."
+                        );
                     }
 
                     if ($product->stock < $item->quantity) {

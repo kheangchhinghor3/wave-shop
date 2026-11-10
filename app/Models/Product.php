@@ -46,4 +46,20 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class)->orderBy('sort_order')->orderBy('id');
     }
+
+    // A limited drop whose end time has already passed
+    public function dropEnded(): bool
+    {
+        return $this->is_limited
+            && $this->drop_ends_at !== null
+            && $this->drop_ends_at->isPast();
+    }
+
+    // A limited drop that is still running
+    public function dropLive(): bool
+    {
+        return $this->is_limited
+            && $this->drop_ends_at !== null
+            && $this->drop_ends_at->isFuture();
+    }
 }

@@ -35,8 +35,12 @@
 
         <div class="pcard-price">${{ number_format($product->price, 2) }}</div>
 
+        @include('partials.drop-timer', ['product' => $product])
+
         <div class="pcard-actions">
-            @if ($product->stock > 0)
+            @if ($product->dropEnded())
+                <span class="pcard-soldout">DROP ENDED</span>
+            @elseif ($product->stock > 0)
                 @auth
                     <form action="{{ route('cart.add', $product->id) }}" method="POST">
                         @csrf

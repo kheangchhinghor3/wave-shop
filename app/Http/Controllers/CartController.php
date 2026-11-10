@@ -51,6 +51,10 @@ class CartController extends Controller
 
     public function add(Product $product)
     {
+        if ($product->dropEnded()) {
+            return back()->with('error', "The drop for {$product->name} has ended.");
+        }
+
         if ($product->stock < 1) {
             return back()->with('error', 'Sorry, this product is sold out.');
         }
@@ -89,6 +93,11 @@ class CartController extends Controller
             $item->delete();
 
             return back()->with('success', 'Item removed from your cart.');
+        }
+
+        // After a drop ends, the quantity can go down but not up
+        if ($item->product->dropEnded() && $quantity > $item->quantity) {
+            return back()->with('error', "The drop for {$item->product->name} has ended.");
         }
 
         if ($quantity > $item->product->stock) {
@@ -148,7 +157,7 @@ class CartController extends Controller
         return back()->with('success', 'Coupon removed.');
     }
 
-        private function subtotalOf(\Illuminate\Support\Collection $items): float
+    private function subtotalOf(\Illuminate\Support\Collection $items): float
     {
         return (float) $items->sum(fn ($item) => $item->product->price * $item->quantity);
     }
